@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizations and Facilities Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f8fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #e1e4e8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 16px;
+        }
+
+        .tab-container {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e4e8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 20px 30px;
+            background: #f7fafc;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+
+        .tab-button.active {
+            background: #3498db;
+            color: white;
+            border-bottom-color: #2980b9;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .organization-content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        textarea.form-control {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .logo-upload {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .logo-upload:hover {
+            border-color: #3498db;
+            background: #f7fafc;
+        }
+
+        .upload-icon {
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #3498db;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #68d391;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            right: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .status-text {
+            font-weight: 600;
+            color: #38a169;
+            font-size: 14px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e1e4e8;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #718096;
+            border: 1px solid #e1e4e8;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+        }
+
+        .facilities-container {
+            padding: 20px;
+            background: #f5f8fa;
+        }
+
+        .facility-tab-nav {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 2px;
+        }
+
+        .facility-tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: #f7fafc;
+            color: #718096;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+            border: 1px solid #e1e4e8;
+            transition: all 0.3s ease;
+        }
+
+        .facility-tab-btn.active {
+            background: #3498db;
+            color: white;
+            border-bottom-color: #3498db;
+        }
+
+        .facility-tab-btn:hover:not(.active) {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+
+        .facility-tab-content {
+            display: none;
+        }
+
+        .facility-tab-content.active {
+            display: block;
+        }
+
+        .facility-tab-content svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: 24px 30px 0 30px;
+            border-bottom: 1px solid #e1e4e8;
+            margin-bottom: 0;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 0 0 8px 0;
+        }
+
+        .modal-header p {
+            color: #718096;
+            font-size: 14px;
+            margin: 0 0 20px 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #718096;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f7fafc;
+            color: #4a5568;
+        }
+
+        .modal-body {
+            padding: 20px 30px;
+        }
+
+        .modal-footer {
+            padding: 0 30px 30px 30px;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            border-top: 1px solid #e1e4e8;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+            
+            .modal-header, .modal-body, .modal-footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tab-button {
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+            
+            .organization-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Organizations and Facilities Management</h1>
+            <p>Manage your organization's details and facility information</p>
+        </div>
+
+        <!-- Tab Container -->
+        <div class="tab-container">
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class="tab-button active" onclick="showTab('organization')">Organization</button>
+                <button class="tab-button" onclick="showTab('facilities')">Facilities</button>
+            </div>
+
+            <!-- Organization Tab Content -->
+            <div id="organization" class="tab-content active">
+                <div class="organization-content">
+                    <!-- Logo and Basic Info Row -->
+                    <div style="display: flex; align-items: flex-start; gap: 30px; margin-bottom: 30px;">
+                        <!-- Logo Upload -->
+                        <div>
+                            <div class="form-group">
+                                <label>Organization Logo</label>
+                                <div class="logo-upload">
+                                    <div class="upload-icon">+</div>
+                                    <div class="upload-text">Upload Logo</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Organization Details -->
+                        <div style="flex: 1;">
+                            <!-- Organization Name -->
+                            <div class="form-group">
+                                <label>Organization Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter organization name" value="Metro Medical Center, LLC">
+                            </div>
+
+                            <!-- Display Name -->
+                            <div class="form-group">
+                                <label>Display Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" placeholder="Enter display name" value="Metro Medical Center">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Directory Organization ID -->
+                    <div class="form-group">
+                        <label>Directory Organization ID</label>
+                        <input type="text" class="form-control" placeholder="Enter directory organization ID" value="ORG-12345">
+                    </div>
+
+                    <!-- Organization Description -->
+                    <div class="form-group">
+                        <label>Organization Description</label>
+                        <textarea class="form-control" placeholder="Brief description of your organization">Leading healthcare provider serving the metropolitan area with comprehensive medical services, advanced technology, and compassionate care for over 25 years.</textarea>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="status-toggle">
+                            <div class="toggle-switch"></div>
+                            <span class="status-text">ACTIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button class="btn btn-secondary">Cancel</button>
+                        <button class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Facilities Tab Content -->
+            <div id="facilities" class="tab-content">
+                <div class="facilities-container">
+                    <!-- Basic Information SVG -->
+                    <div id="facilityBasicTab" class="facility-tab-content active">
+                        <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Main Container - Full width -->
+                            <rect x="20" y="20" width="1160" height="760" rx="8" fill="#ffffff" stroke="#e1e4e8" stroke-width="1" />
+                            
+                            <!-- Page Title and Add Button -->
+                            <text x="50" y="70" font-family="Arial" font-size="28" fill="#2d3748" font-weight="bold">Facilities Management</text>
+                            <text x="50" y="95" font-family="Arial" font-size="16" fill="#718096">Manage your organization's facilities</text>
+                            
+                            <rect x="950" y="50" width="220" height="40" rx="4" fill="#3498db" style="cursor: pointer;" onclick="openAddFacilityModal()" />
+                            <text x="1060" y="75" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold" style="cursor: pointer;" onclick="openAddFacilityModal()">+ ADD NEW FACILITY</text>
+                            
+                            <!-- Facility Dropdown - Wider -->
+                            <text x="50" y="130" font-family="Arial" font-size="14" fill="#4a5568">Select Facility</text>
+                            <rect x="50" y="140" width="1120" height="50" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="70" y="170" font-family="Arial" font-size="14" fill="#2d3748" font-weight="bold">North Wing Clinic</text>
+                            <text x="1150" y="170" font-family="Arial" font-size="14" fill="#718096">▼</text>
+                            
+                            <!-- Facility Details -->
+                            <text x="50" y="220" font-family="Arial" font-size="16" fill="#2d3748" font-weight="bold">Facility Details</text>
+                            
+                            <!-- Form Section - Full width and taller -->
+                            <rect x="50" y="240" width="1120" height="520" rx="4" fill="#f7fafc" stroke="#e1e4e8" stroke-width="1" />
+                            
+                            <!-- Tabs - Wider -->
+                            <rect x="50" y="240" width="560" height="40" rx="4 4 0 0" fill="#3498db" style="cursor: pointer;" onclick="showFacilityTab('basic')" />
+                            <text x="330" y="265" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold" style="cursor: pointer;" onclick="showFacilityTab('basic')">Basic Information</text>
+                            
+                            <rect x="610" y="240" width="560" height="40" rx="4 4 0 0" fill="#f7fafc" stroke="#e1e4e8" stroke-width="1" style="cursor: pointer;" onclick="showFacilityTab('links')" />
+                            <text x="890" y="265" font-family="Arial" font-size="14" text-anchor="middle" fill="#718096" style="cursor: pointer;" onclick="showFacilityTab('links')">Links</text>
+                            
+                            <!-- Form Fields - Basic Information Tab -->
+                            <!-- Profile Image Upload - Larger -->
+                            <rect x="80" y="300" width="200" height="200" rx="4" fill="#ffffff" stroke="#cbd5e0" stroke-width="2" />
+                            <rect x="170" y="390" width="20" height="20" rx="10" fill="#3498db" />
+                            <text x="180" y="402" font-family="Arial" font-size="18" text-anchor="middle" fill="#ffffff" font-weight="bold">+</text>
+                            <text x="180" y="520" font-family="Arial" font-size="14" text-anchor="middle" fill="#3498db">Upload Image</text>
+                            
+                            <!-- Registered Name - Larger field -->
+                            <text x="320" y="300" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Registered Name<tspan fill="#e53e3e">*</tspan></text>
+                            <rect x="320" y="310" width="830" height="50" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="340" y="340" font-family="Arial" font-size="14" fill="#4a5568">North Wing Diagnostic Center, Inc.</text>
+                            
+                            <!-- Display Name - Larger field -->
+                            <text x="320" y="380" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Display Name<tspan fill="#e53e3e">*</tspan></text>
+                            <rect x="320" y="390" width="830" height="50" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="340" y="420" font-family="Arial" font-size="14" fill="#4a5568">North Wing Clinic</text>
+                            
+                            <!-- Description - Larger -->
+                            <text x="80" y="470" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Description</text>
+                            <rect x="80" y="480" width="1070" height="120" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="100" y="505" font-family="Arial" font-size="14" fill="#4a5568">Specialized outpatient services and diagnostic center located in the northern wing of Metro Medical Center.</text>
+                            <text x="100" y="525" font-family="Arial" font-size="14" fill="#4a5568">Offers comprehensive diagnostic imaging, laboratory services, and specialty consultations including cardiology,</text>
+                            <text x="100" y="545" font-family="Arial" font-size="14" fill="#4a5568">neurology, and orthopedics. State-of-the-art equipment and experienced medical professionals provide</text>
+                            <text x="100" y="565" font-family="Arial" font-size="14" fill="#4a5568">exceptional patient care in a comfortable, modern environment.</text>
+                            
+                            <!-- Status Toggle - Larger -->
+                            <text x="80" y="630" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Status</text>
+                            <rect x="150" y="620" width="100" height="35" rx="17" fill="#68d391" />
+                            <circle cx="220" cy="637" r="14" fill="#ffffff" />
+                            <text x="185" y="640" font-family="Arial" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">ACTIVE</text>
+                            
+                            <!-- Action Buttons - Repositioned and larger -->
+                            <rect x="1020" y="700" width="130" height="45" rx="4" fill="#3498db" />
+                            <text x="1085" y="727" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold">SAVE</text>
+                            
+                            <rect x="870" y="700" width="130" height="45" rx="4" fill="#ffffff" stroke="#fc8181" stroke-width="2" />
+                            <text x="935" y="727" font-family="Arial" font-size="14" text-anchor="middle" fill="#fc8181" font-weight="bold">DELETE</text>
+                            
+                            <rect x="720" y="700" width="130" height="45" rx="4" fill="#ffffff" stroke="#e1e4e8" stroke-width="2" />
+                            <text x="785" y="727" font-family="Arial" font-size="14" text-anchor="middle" fill="#718096" font-weight="bold">CANCEL</text>
+                        </svg>
+                    </div>
+                    
+                    <!-- Links SVG -->
+                    <div id="facilityLinksTab" class="facility-tab-content">
+                        <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Main Container - Full width -->
+                            <rect x="20" y="20" width="1160" height="760" rx="8" fill="#ffffff" stroke="#e1e4e8" stroke-width="1" />
+                            
+                            <!-- Page Title and Add Button -->
+                            <text x="50" y="70" font-family="Arial" font-size="28" fill="#2d3748" font-weight="bold">Facilities Management</text>
+                            <text x="50" y="95" font-family="Arial" font-size="16" fill="#718096">Manage your organization's facilities</text>
+                            
+                            <rect x="950" y="50" width="220" height="40" rx="4" fill="#3498db" style="cursor: pointer;" onclick="openAddFacilityModal()" />
+                            <text x="1060" y="75" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold" style="cursor: pointer;" onclick="openAddFacilityModal()">+ ADD NEW FACILITY</text>
+                            
+                            <!-- Facility Dropdown - Wider -->
+                            <text x="50" y="130" font-family="Arial" font-size="14" fill="#4a5568">Select Facility</text>
+                            <rect x="50" y="140" width="1120" height="50" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="70" y="170" font-family="Arial" font-size="14" fill="#2d3748" font-weight="bold">North Wing Clinic</text>
+                            <text x="1150" y="170" font-family="Arial" font-size="14" fill="#718096">▼</text>
+                            
+                            <!-- Facility Details -->
+                            <text x="50" y="220" font-family="Arial" font-size="16" fill="#2d3748" font-weight="bold">Facility Details</text>
+                            
+                            <!-- Form Section - Full width and taller -->
+                            <rect x="50" y="240" width="1120" height="520" rx="4" fill="#f7fafc" stroke="#e1e4e8" stroke-width="1" />
+                            
+                            <!-- Tabs - Wider -->
+                            <rect x="50" y="240" width="560" height="40" rx="4 4 0 0" fill="#f7fafc" stroke="#e1e4e8" stroke-width="1" style="cursor: pointer;" onclick="showFacilityTab('basic')" />
+                            <text x="330" y="265" font-family="Arial" font-size="14" text-anchor="middle" fill="#718096" style="cursor: pointer;" onclick="showFacilityTab('basic')">Basic Info</text>
+                            
+                            <rect x="610" y="240" width="560" height="40" rx="4 4 0 0" fill="#3498db" style="cursor: pointer;" onclick="showFacilityTab('links')" />
+                            <text x="890" y="265" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold" style="cursor: pointer;" onclick="showFacilityTab('links')">Links</text>
+                            
+                            <!-- Form Fields - Links Tab -->
+                            <!-- Booking Code - Larger -->
+                            <text x="80" y="300" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Booking Code</text>
+                            <rect x="80" y="310" width="500" height="50" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="100" y="340" font-family="Arial" font-size="14" fill="#4a5568">wellpeak</text>
+                            <text x="450" y="340" font-family="Arial" font-size="14" fill="#718096">hspc.com</text>
+                            <rect x="600" y="315" width="120" height="40" rx="4" fill="#3498db" />
+                            <text x="660" y="340" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold">Copy</text>
+                            
+                            <!-- Website URL - Larger -->
+                            <text x="80" y="380" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Website URL</text>
+                            <rect x="80" y="390" width="1070" height="50" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="100" y="420" font-family="Arial" font-size="14" fill="#4a5568">https://metromedical.com/north-wing</text>
+                            
+                            <!-- Additional URL Field -->
+                            <text x="80" y="460" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Booking Portal URL</text>
+                            <rect x="80" y="470" width="1070" height="50" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="100" y="500" font-family="Arial" font-size="14" fill="#4a5568">https://booking.metromedical.com/wellpeak</text>
+                            
+                            <!-- QR Code Section - Larger -->
+                            <text x="80" y="540" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Booking QR Code</text>
+                            <rect x="80" y="550" width="150" height="150" rx="4" fill="#ffffff" stroke="#cbd5e0" stroke-width="2" />
+                            <!-- Simple QR code representation -->
+                            <rect x="95" y="565" width="120" height="120" fill="#f7fafc" />
+                            <rect x="110" y="580" width="90" height="90" fill="#2d3748" />
+                            <rect x="125" y="595" width="60" height="60" fill="#ffffff" />
+                            <rect x="140" y="610" width="30" height="30" fill="#2d3748" />
+                            
+                            <!-- QR Code Actions -->
+                            <rect x="260" y="570" width="120" height="40" rx="4" fill="#3498db" />
+                            <text x="320" y="595" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold">Download</text>
+                            
+                            <rect x="260" y="620" width="120" height="40" rx="4" fill="#f7fafc" stroke="#3498db" stroke-width="1" />
+                            <text x="320" y="645" font-family="Arial" font-size="14" text-anchor="middle" fill="#3498db" font-weight="bold">Generate New</text>
+                            
+                            <!-- Booking Button Embed Code -->
+                            <text x="400" y="570" font-family="Arial" font-size="14" fill="#4a5568" font-weight="600">Booking Button Embed Code</text>
+                            <rect x="400" y="580" width="750" height="120" rx="4" fill="white" stroke="#cbd5e0" stroke-width="1" />
+                            <text x="420" y="605" font-family="Arial" font-size="14" fill="#4a5568">Copy this code to embed a booking button on your website:</text>
+                            <text x="420" y="630" font-family="Arial" font-size="12" fill="#2d3748" font-family="monospace">&lt;button onclick="window.open('https://booking.metromedical.com/wellpeak')"&gt;</text>
+                            <text x="420" y="650" font-family="Arial" font-size="12" fill="#2d3748" font-family="monospace">  Book Appointment - North Wing Clinic</text>
+                            <text x="420" y="670" font-family="Arial" font-size="12" fill="#2d3748" font-family="monospace">&lt;/button&gt;</text>
+                            
+                            <rect x="1100" y="590" width="40" height="30" rx="4" fill="#3498db" />
+                            <text x="1120" y="610" font-family="Arial" font-size="12" text-anchor="middle" fill="#ffffff" font-weight="bold">Copy</text>
+                            
+                            <!-- Action Buttons - Repositioned and larger -->
+                            <rect x="1020" y="720" width="130" height="45" rx="4" fill="#3498db" />
+                            <text x="1085" y="747" font-family="Arial" font-size="14" text-anchor="middle" fill="#ffffff" font-weight="bold">SAVE</text>
+                            
+                            <rect x="870" y="720" width="130" height="45" rx="4" fill="#ffffff" stroke="#fc8181" stroke-width="2" />
+                            <text x="935" y="747" font-family="Arial" font-size="14" text-anchor="middle" fill="#fc8181" font-weight="bold">DELETE</text>
+                            
+                            <rect x="720" y="720" width="130" height="45" rx="4" fill="#ffffff" stroke="#e1e4e8" stroke-width="2" />
+                            <text x="785" y="747" font-family="Arial" font-size="14" text-anchor="middle" fill="#718096" font-weight="bold">CANCEL</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Facility Modal -->
+        <div id="addFacilityModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header" style="position: relative;">
+                    <button class="modal-close" onclick="closeAddFacilityModal()">&times;</button>
+                    <h2>Add New Facility</h2>
+                    <p>Create a new facility for your organization</p>
+                </div>
+                <div class="modal-body">
+                    <form id="addFacilityForm">
+                        <div class="form-group">
+                            <label for="facilityName">Facility Name <span class="required">*</span></label>
+                            <input type="text" id="facilityName" class="form-control" placeholder="Enter the official facility name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="facilityDisplayName">Facility Display Name <span class="required">*</span></label>
+                            <input type="text" id="facilityDisplayName" class="form-control" placeholder="Enter the display name for patients" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="facilityDescription">Facility Description</label>
+                            <textarea id="facilityDescription" class="form-control" placeholder="Provide a brief description of the facility's services and specialties" rows="4"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddFacilityModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="createFacility()">Create Facility</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+        }
+
+        function showFacilityTab(tabName) {
+            // Hide all facility tab contents
+            const facilityTabContents = document.querySelectorAll('.facility-tab-content');
+            facilityTabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Show selected facility tab content
+            if (tabName === 'basic') {
+                document.getElementById('facilityBasicTab').classList.add('active');
+            } else if (tabName === 'links') {
+                document.getElementById('facilityLinksTab').classList.add('active');
+            }
+        }
+
+        // Modal functions
+        function openAddFacilityModal() {
+            document.getElementById('addFacilityModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeAddFacilityModal() {
+            document.getElementById('addFacilityModal').classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+            // Reset form
+            document.getElementById('addFacilityForm').reset();
+        }
+
+        function createFacility() {
+            const facilityName = document.getElementById('facilityName').value;
+            const facilityDisplayName = document.getElementById('facilityDisplayName').value;
+            const facilityDescription = document.getElementById('facilityDescription').value;
+
+            // Basic validation
+            if (!facilityName.trim() || !facilityDisplayName.trim()) {
+                alert('Please fill in all required fields (Facility Name and Display Name).');
+                return;
+            }
+
+            // Here you would typically send the data to your backend
+            console.log('Creating new facility:', {
+                name: facilityName,
+                displayName: facilityDisplayName,
+                description: facilityDescription
+            });
+
+            // Show success message (in a real app, this would be after successful API call)
+            alert(`Facility "${facilityDisplayName}" has been created successfully!`);
+            
+            // Close modal and reset form
+            closeAddFacilityModal();
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('addFacilityModal');
+            if (event.target === modal) {
+                closeAddFacilityModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('addFacilityModal');
+                if (modal.classList.contains('active')) {
+                    closeAddFacilityModal();
+                }
+            }
+        });
+
+        // Toggle functionality for status switches
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const statusText = this.nextElementSibling;
+                if (this.classList.contains('active')) {
+                    statusText.textContent = 'INACTIVE';
+                    statusText.style.color = '#e53e3e';
+                    this.style.background = '#e53e3e';
+                    this.style.transform = 'scaleX(-1)';
+                } else {
+                    statusText.textContent = 'ACTIVE';
+                    statusText.style.color = '#38a169';
+                    this.style.background = '#68d391';
+                    this.style.transform = 'scaleX(1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

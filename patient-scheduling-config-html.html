@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Scheduling Page Configuration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #2c3e50;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px 50px;
+            min-height: calc(100vh - 60px);
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            background-color: #ecf0f1;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        input[type="text"], 
+        input[type="url"], 
+        textarea, 
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #95a5a6;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .url-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .url-suffix {
+            padding: 12px;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            border-left: 1px solid #bdc3c7;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .copy-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-left: 1px solid #bdc3c7;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .url-input-container input {
+            border: none;
+            flex: 1;
+        }
+
+        .logo-upload {
+            width: 150px;
+        }
+
+        .upload-area {
+            width: 150px;
+            height: 100px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .upload-area:hover {
+            background-color: #f8f9fa;
+        }
+
+        .upload-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .upload-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .color-theme {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .color-swatch:hover {
+            border-color: #2c3e50;
+        }
+
+        .color-swatch.selected {
+            border-color: #2c3e50;
+        }
+
+        .color-custom {
+            color: #95a5a6;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 0;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .toggle-option {
+            padding: 12px 20px;
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #2c3e50;
+            transition: all 0.2s;
+        }
+
+        .toggle-option.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .toggle-option:hover:not(.active) {
+            background-color: #f8f9fa;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-cancel {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #229954;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Patient Scheduling Page Configuration
+    </div>
+
+    <div class="container">
+        <!-- Basic Information Section -->
+        <div class="section">
+            <div class="section-header">Basic Information</div>
+            
+            <div class="form-group">
+                <label for="businessName">Business Name</label>
+                <input type="text" id="businessName" name="businessName" placeholder="Enter your business name">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group logo-upload">
+                    <label>Company Logo</label>
+                    <div class="upload-area" onclick="document.getElementById('logoFile').click()">
+                        <button type="button" class="upload-btn">Upload</button>
+                    </div>
+                    <input type="file" id="logoFile" accept="image/*" style="display: none;">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <label for="businessDescription">Business Description</label>
+                    <textarea id="businessDescription" name="businessDescription" placeholder="Enter a brief description of your business"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Settings Section -->
+        <div class="section">
+            <div class="section-header">Display Settings</div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Color Theme</label>
+                    <div class="color-theme">
+                        <div class="color-swatch selected" style="background-color: #3498db;" data-color="#3498db"></div>
+                        <div class="color-swatch" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
+                        <div class="color-swatch" style="background-color: #2ecc71;" data-color="#2ecc71"></div>
+                        <div class="color-swatch" style="background-color: #f39c12;" data-color="#f39c12"></div>
+                        <div class="color-swatch" style="background-color: #9b59b6;" data-color="#9b59b6"></div>
+                        <span class="color-custom">Custom...</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schedulingInstructions">Scheduling Instructions</label>
+                    <input type="text" id="schedulingInstructions" name="schedulingInstructions" placeholder="Add instructions...">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Default View</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-option active" data-value="monthly">Monthly</button>
+                        <button type="button" class="toggle-option" data-value="daily">Daily</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="weekStartsOn">Week Starts On</label>
+                    <select id="weekStartsOn" name="weekStartsOn">
+                        <option value="monday" selected>Monday</option>
+                        <option value="sunday">Sunday</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Time Format</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-option active" data-value="12hour">12-hour</button>
+                        <button type="button" class="toggle-option" data-value="24hour">24-hour</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Display Options</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hidePrices" name="hidePrices">
+                        <label for="hidePrices">Hide Prices</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hideDuration" name="hideDuration">
+                        <label for="hideDuration">Hide Appointment Duration</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links Section -->
+        <div class="section">
+            <div class="section-header">Links</div>
+            
+            <div class="form-group">
+                <label for="bookingCode">Booking Code URL</label>
+                <div class="url-input-container">
+                    <input type="text" id="bookingCode" name="bookingCode" placeholder="Enter booking code" style="flex: 1;">
+                    <span class="url-suffix">hspc.com</span>
+                    <button type="button" class="copy-btn" onclick="copyBookingUrl()">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button type="button" class="btn btn-cancel" onclick="handleCancel()">Cancel</button>
+            <button type="button" class="btn btn-save" onclick="handleSave()">Save</button>
+        </div>
+    </div>
+
+    <script>
+        // Color theme selection
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', function() {
+                document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Toggle button groups
+        document.querySelectorAll('.toggle-group').forEach(group => {
+            group.querySelectorAll('.toggle-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    group.querySelectorAll('.toggle-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        // File upload handling
+        document.getElementById('logoFile').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const fileName = e.target.files[0].name;
+                document.querySelector('.upload-btn').textContent = fileName;
+            }
+        });
+
+        // Copy booking URL function
+        function copyBookingUrl() {
+            const bookingCode = document.getElementById('bookingCode').value;
+            const fullUrl = `${bookingCode}.hspc.com`;
+            
+            if (bookingCode.trim() === '') {
+                alert('Please enter a booking code first.');
+                return;
+            }
+            
+            navigator.clipboard.writeText(fullUrl).then(function() {
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.style.backgroundColor = '#27ae60';
+                
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.style.backgroundColor = '#3498db';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+                alert('Copy failed. Please copy manually: ' + fullUrl);
+            });
+        }
+
+        // Button handlers
+        function handleCancel() {
+            if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                // Reset form or navigate away
+                location.reload();
+            }
+        }
+
+        function handleSave() {
+            // Collect form data
+            const formData = {
+                businessName: document.getElementById('businessName').value,
+                businessDescription: document.getElementById('businessDescription').value,
+                schedulingInstructions: document.getElementById('schedulingInstructions').value,
+                schedulingUrl: document.getElementById('bookingCode').value,
+                weekStartsOn: document.getElementById('weekStartsOn').value,
+                hidePrices: document.getElementById('hidePrices').checked,
+                hideDuration: document.getElementById('hideDuration').checked,
+                colorTheme: document.querySelector('.color-swatch.selected').dataset.color,
+                defaultView: document.querySelector('.toggle-group .toggle-option.active[data-value]').dataset.value,
+                timeFormat: document.querySelectorAll('.toggle-group')[1].querySelector('.toggle-option.active').dataset.value
+            };
+            
+            console.log('Saving configuration:', formData);
+            alert('Configuration saved successfully!');
+        }
+    </script>
+</body>
+</html>
